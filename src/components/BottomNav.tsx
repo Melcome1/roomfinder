@@ -9,8 +9,7 @@ const tenantTabs = [
 ]
 
 const landlordTabs = [
-  { to: '/listings', label: 'Listings', icon: List },
-  { to: '/listings/new', label: 'Add Room', icon: PlusCircle },
+  { to: '/listings', label: 'My Listing', icon: List },
   { to: '/profile', label: 'Profile', icon: User },
 ]
 

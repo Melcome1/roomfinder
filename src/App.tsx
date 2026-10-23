@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import AppLayout from './components/AppLayout'
 import RoleGuard from './components/RoleGuard'
-
 import Welcome from './pages/auth/Welcome'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
@@ -12,6 +11,7 @@ import Saved from './pages/tenant/Saved'
 import RoomDetails from './pages/tenant/RoomDetails'
 import Listings from './pages/landlord/Listings'
 import AddRoom from './pages/landlord/AddRoom'
+import EditRoom from './pages/landlord/EditRoom'
 
 export default function App() {
   return (
@@ -22,6 +22,8 @@ export default function App() {
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/listings/new" element={<AddRoom />} />
+          <Route path="/listings/edit" element={<EditRoom />} />
 
           {/* Signed-in area */}
           <Route element={<AppLayout />}>
