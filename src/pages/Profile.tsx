@@ -1,7 +1,9 @@
 import { useAuth } from '../context/AuthContext'
+import { useInstallPrompt } from '../hooks/useInstallPrompt'
 
 export default function Profile() {
   const { profile, session, signOut } = useAuth()
+  const { canInstall, installed, install } = useInstallPrompt()
 
   return (
     <div>
@@ -15,7 +17,12 @@ export default function Profile() {
           {profile?.role}
         </span>
       </div>
-
+      {canInstall && (
+        <button onClick={install} className="mt-6 w-full rounded-xl bg-primary py-3 font-semibold">
+          Install app
+        </button>
+      )}
+      {installed && <p className="mt-6 text-sm text-muted text-center">RoomFinder is installed on this device.</p>}
       <button onClick={signOut} className="mt-6 w-full rounded-xl border border-border py-3">
         Log out
       </button>

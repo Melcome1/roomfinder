@@ -1,6 +1,8 @@
 import { Link, Navigate } from 'react-router-dom'
 import { Home } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
+import InstallBanner from '../../components/InstallBanner'
+
 
 export default function Welcome() {
   const { profile } = useAuth()
@@ -8,6 +10,7 @@ export default function Welcome() {
 
   return (
     <div className="mx-auto max-w-md min-h-full flex flex-col items-center justify-center px-6 gap-3">
+     <div className="w-full"><InstallBanner /></div>
       <Home size={64} className="text-primary" />
       <h1 className="text-4xl font-bold">
         Room<span className="text-primary-soft">Finder</span>

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../context/AuthContext'
 import { useMyRoom } from '../../hooks/useMyRoom'
+import InstallBanner from '../../components/InstallBanner'
 
 export default function Listings() {
   const { session } = useAuth()
@@ -16,6 +17,7 @@ export default function Listings() {
   if (!room) {
     return (
       <div className="text-center mt-16">
+        <InstallBanner />
         <h1 className="text-2xl font-bold">My Listing</h1>
         <p className="text-muted mt-2 mb-6">You haven't posted a room yet.</p>
         <Link
