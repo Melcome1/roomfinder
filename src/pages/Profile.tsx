@@ -1,17 +1,21 @@
-import { useAuth } from '../context/AuthContext'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import { useInstallPrompt } from '../hooks/useInstallPrompt'
 
 export default function Profile() {
   const { profile, session, signOut } = useAuth()
+  const { canInstall, installed, install } = useInstallPrompt()
 
   if (!session) {
-  return (
-    <div className="text-center mt-16">
-      <p className="text-muted mb-6">You're not signed in.</p>
-      <Link to="/login" className="inline-block rounded-xl bg-primary px-6 py-3 font-semibold">Sign in</Link>
-    </div>
-  )
-}
+    return (
+      <div className="text-center mt-16">
+        <p className="text-muted mb-6">You're not signed in.</p>
+        <Link to="/login" className="inline-block rounded-xl bg-primary px-6 py-3 font-semibold">
+          Sign in
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -25,6 +29,15 @@ export default function Profile() {
           {profile?.role}
         </span>
       </div>
+
+      {canInstall && (
+        <button onClick={install} className="mt-6 w-full rounded-xl bg-primary py-3 font-semibold">
+          Install app
+        </button>
+      )}
+      {installed && (
+        <p className="mt-6 text-sm text-muted text-center">RoomFinder is installed on this device.</p>
+      )}
 
       <button onClick={signOut} className="mt-6 w-full rounded-xl border border-border py-3">
         Log out

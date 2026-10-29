@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Home, Heart, User, List, LogIn} from 'lucide-react'
+import { Home, Heart, User, List, LogIn } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 const tenantTabs = [

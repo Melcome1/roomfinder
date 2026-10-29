@@ -3,6 +3,7 @@ import { Search } from 'lucide-react'
 import { useRooms, type Filters } from '../../hooks/useRooms'
 import { useFavourites } from '../../hooks/useFavourites'
 import RoomCard from '../../components/RoomCard'
+import InstallBanner from '../../components/InstallBanner'
 
 const types: { value: Filters['type']; label: string }[] = [
   { value: 'all', label: 'All' },
@@ -20,8 +21,9 @@ export default function TenantHome() {
   const { ids, toggle } = useFavourites()
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Find a Room</h1>
+     <div>
+    <InstallBanner />
+    <h1 className="text-2xl font-bold mb-4">Find a Room</h1>
 
       <div className="relative">
         <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" />
