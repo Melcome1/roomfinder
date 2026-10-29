@@ -1,11 +1,17 @@
 import { NavLink } from 'react-router-dom'
-import { Home, Heart, User, List, PlusCircle } from 'lucide-react'
+import { Home, Heart, User, List, LogIn} from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 const tenantTabs = [
   { to: '/', label: 'Home', icon: Home },
   { to: '/saved', label: 'Saved', icon: Heart },
   { to: '/profile', label: 'Profile', icon: User },
+]
+
+const guestTabs = [
+  { to: '/', label: 'Home', icon: Home },
+  { to: '/saved', label: 'Saved', icon: Heart },
+  { to: '/login', label: 'Sign in', icon: LogIn },
 ]
 
 const landlordTabs = [
@@ -15,7 +21,7 @@ const landlordTabs = [
 
 export default function BottomNav() {
   const { role } = useAuth()
-  const tabs = role === 'landlord' ? landlordTabs : tenantTabs
+  const tabs = role === 'landlord' ? landlordTabs : role === 'tenant' ? tenantTabs : guestTabs
 
   return (
     <nav className="fixed bottom-0 inset-x-0 z-50 bg-surface border-t border-border pb-[env(safe-area-inset-bottom)]">

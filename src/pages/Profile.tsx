@@ -1,7 +1,17 @@
 import { useAuth } from '../context/AuthContext'
+import { Link } from 'react-router-dom'
 
 export default function Profile() {
   const { profile, session, signOut } = useAuth()
+
+  if (!session) {
+  return (
+    <div className="text-center mt-16">
+      <p className="text-muted mb-6">You're not signed in.</p>
+      <Link to="/login" className="inline-block rounded-xl bg-primary px-6 py-3 font-semibold">Sign in</Link>
+    </div>
+  )
+}
 
   return (
     <div>

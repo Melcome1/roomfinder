@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useFavourites } from '../../hooks/useFavourites'
 import RoomCard from '../../components/RoomCard'
 import type { Room } from '../../types/room'
+import { Link } from 'react-router-dom'
 
 export default function Saved() {
   const { session } = useAuth()
@@ -27,6 +28,18 @@ export default function Saved() {
         setLoading(false)
       })
   }, [userId])
+
+  if (!session) {
+  return (
+    <div className="text-center mt-16">
+      <h1 className="text-2xl font-bold">Saved Rooms</h1>
+      <p className="text-muted mt-2 mb-6">Sign in to save rooms and find them here later.</p>
+      <Link to="/login" state={{ from: '/saved' }} className="inline-block rounded-xl bg-primary px-6 py-3 font-semibold">
+        Sign in
+      </Link>
+    </div>
+  )
+}
 
   // Removing a heart here drops the card from the list straight away
   const visible = rooms.filter((r) => ids.has(r.id))

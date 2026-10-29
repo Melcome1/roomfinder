@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../context/AuthContext'
 import Field from '../../components/Field'
@@ -10,8 +10,12 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const location = useLocation()
+  const from = (location.state as { from?: string } | null)?.from
 
-  if (profile) return <Navigate to={profile.role === 'landlord' ? '/listings' : '/'} replace />
+ if (profile) {
+  return <Navigate to={from ?? (profile.role === 'landlord' ? '/listings' : '/')} replace />
+}
 
   const submit = async (e: FormEvent) => {
     e.preventDefault()
@@ -39,7 +43,7 @@ export default function Login() {
       </form>
 
       <p className="text-sm text-muted text-center mt-6">
-        No account yet? <Link to="/register" className="text-primary-soft">Create one</Link>
+        No account yet? <Link to="/register" state={location.state} className="text-primary-soft">Create one</Link> 
       </p>
     </div>
   )

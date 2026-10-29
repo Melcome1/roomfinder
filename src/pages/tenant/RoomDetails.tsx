@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, BedDouble, Bath, CalendarDays, Heart, MapPin, Phone, MessageCircle, Users } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import { useFavourites } from '../../hooks/useFavourites'
 import { toTelNumber, toWhatsAppNumber } from '../../lib/phone'
 import type { RoomWithLandlord } from '../../types/room'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 
 export default function RoomDetails() {
   const { id } = useParams()
@@ -12,6 +13,8 @@ export default function RoomDetails() {
   const { ids, toggle } = useFavourites()
   const [room, setRoom] = useState<RoomWithLandlord | null>(null)
   const [loading, setLoading] = useState(true)
+  const { session } = useAuth()
+  const location = useLocation()
 
   useEffect(() => {
     if (!id) return
@@ -97,30 +100,61 @@ export default function RoomDetails() {
         )}
 
         <div className="rounded-2xl bg-surface border border-border p-4">
-          <p className="text-xs text-muted">Landlord</p>
-          <p className="font-semibold">{room.landlord?.full_name || 'Landlord'}</p>
+  {!session ? (
+    <>
+      <p className="font-semibold">Sign in to contact the landlord</p>
+      <p className="text-sm text-muted mt-1">
+        Create a free account or log in to see how to reach them.
+      </p>
 
-          {phone ? (
-            <div className="grid grid-cols-2 gap-3 mt-4">
-              <a
-                href={`tel:${toTelNumber(phone)}`}
-                className="flex items-center justify-center gap-2 rounded-xl bg-primary py-3 font-semibold"
-              >
+      <div className="grid grid-cols-2 gap-3 mt-4">
+              <button disabled className="flex items-center justify-center gap-2 rounded-xl bg-primary py-3 font-semibold opacity-40 cursor-not-allowed">
                 <Phone size={18} /> Call
-              </a>
-              <a
-                href={`https://wa.me/${toWhatsAppNumber(phone)}?text=${waText}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 rounded-xl bg-success py-3 font-semibold text-black"
-              >
+              </button>
+              <button disabled className="flex items-center justify-center gap-2 rounded-xl bg-success py-3 font-semibold text-black opacity-40 cursor-not-allowed">
                 <MessageCircle size={18} /> WhatsApp
-              </a>
+              </button>
             </div>
-          ) : (
-            <p className="text-sm text-muted mt-3">This landlord hasn't added a phone number.</p>
-          )}
-        </div>
+
+            <Link
+              to="/login"
+              state={{ from: location.pathname }}
+              className="mt-3 block text-center rounded-xl border border-primary py-3 font-semibold"
+            >
+              Sign in
+            </Link>
+            <p className="text-sm text-muted text-center mt-3">
+              New here?{' '}
+              <Link to="/register" state={{ from: location.pathname }} className="text-primary-soft">
+                Create an account
+              </Link>
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="text-xs text-muted">Landlord</p>
+            <p className="font-semibold">{room.landlord?.full_name || 'Landlord'}</p>
+
+            {phone ? (
+              <div className="grid grid-cols-2 gap-3 mt-4">
+                <a href={`tel:${toTelNumber(phone)}`} className="flex items-center justify-center gap-2 rounded-xl bg-primary py-3 font-semibold">
+                  <Phone size={18} /> Call
+                </a>
+                <a
+                  href={`https://wa.me/${toWhatsAppNumber(phone)}?text=${waText}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 rounded-xl bg-success py-3 font-semibold text-black"
+                >
+                  <MessageCircle size={18} /> WhatsApp
+                </a>
+              </div>
+            ) : (
+              <p className="text-sm text-muted mt-3">This landlord hasn't added a phone number.</p>
+            )}
+          </>
+        )}
+      </div>
       </div>
     </div>
   )

@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 export function useFavourites() {
+  const navigate = useNavigate()
+  const location = useLocation()
   const { session } = useAuth()
   const userId = session?.user.id
   const [ids, setIds] = useState<Set<string>>(new Set())
@@ -18,8 +21,12 @@ export function useFavourites() {
 
   const toggle = useCallback(
     async (roomId: string) => {
-      if (!userId) return
-      const isFav = ids.has(roomId)
+      if (!userId) {
+        navigate('/login', { state: { from: location.pathname } })
+        return
+      }
+
+       const isFav = ids.has(roomId)
 
       // Update the UI immediately, roll back if the database call fails
       setIds((prev) => {
@@ -42,7 +49,7 @@ export function useFavourites() {
         })
       }
     },
-    [userId, ids]
+    [userId, ids, navigate, location.pathname]
   )
 
   return { ids, toggle }
